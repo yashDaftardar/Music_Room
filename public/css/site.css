@@ -1,0 +1,160 @@
+body {
+  background-color: #C8A2C8;
+  background-image: url();
+}
+
+footer {
+  margin:100px 0 45px;
+}
+
+.btn-group{
+  background-clip: padding-box;
+  border: 1px solid #daced3;
+  border-radius: .25rem;
+  text-align: left;
+}
+.btn-submit {
+  color: #ffffff;
+  background-color: #0cb8de;
+  border: none;
+  padding: 5px;
+  border: 1px solid #0999b9;
+  width: 100%;
+  cursor: pointer;
+} 
+
+.card {
+  padding:0.90em 0;
+  opacity: 1.0;
+  
+  
+}
+
+.dropdown-menu {
+  margin-left:-4.25em;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bolder;
+}
+.navbar form input {
+  display:none !important;
+}
+
+.navbar-brand {
+  font-size:2em;
+  font-weight:bold;
+}
+
+.neon-red-girl {
+  margin-top:2em;
+  text-align: center;
+}
+
+.neon-red-girl img {
+  height:200px;
+}
+
+.row {
+  margin-top: 10em;
+  width: auto;
+  height: auto;
+
+}
+
+
+.m-t-b-5 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.registration {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 1.25em;
+  text-align: center;
+  width: 35%;
+}
+
+.user_name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comments-list .media {
+  border-bottom: 1px dotted #ccc;
+}
+
+.multiselect-selected-text{
+  float: left;
+}
+.btn-group{
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    text-align: left;
+}
+.dropdown-toggle::after {
+    float: right;
+    margin-top: 10px;
+}
+
+.error{
+  color : red;
+  padding : 3px;
+  text-align: center;
+  font-size: 20px;
+}
+
+#p-hint, #u-hint{
+  color : #696969	;
+  background-color: lightgoldenrodyellow;
+  font-size: 12px;
+  margin-top: 2px;
+  padding: 2px 0 2px 12px
+}
+
+.success-login{
+  text-align : center;
+}
+
+.multiselect-container.dropdown-menu {
+  max-height: 250px;
+  overflow:scroll;
+}
+
+.artist-images{
+  width : 35px;
+  height : 35px;
+}
+
+.list-group.list-group-flush{
+  padding:0.90em 0;
+  opacity: 1.0;
+
+}
+
+
+h5.card-title.text-center{
+  background: #93c572;
+  color :#000000;
+  padding: 10px;
+
+}
+
+.multiselect.btn {
+  background-color: #ffffff;
+}
+
+.anchor {
+  color: #007bff !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+    cursor: pointer !important;
+}

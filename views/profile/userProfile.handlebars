@@ -1,0 +1,88 @@
+
+<div class="row">
+    <div class="col-4 m-auto">
+        <div id="error" class="error"></div>
+        <div class="alert alert-success alert-dismissible fade show" style="display: none;" id="success"
+            role="alert">
+            <strong>Success!</strong> Profile updated successfully
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+{{#if error_message}}
+<div class="row">
+    <div class="col-4 m-auto">
+        <div class="alert alert-danger  alert-dismissible fade show">
+            {{error_message}}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    </div>
+</div>
+{{/if}}
+
+<div class="registration">
+    <form method="post" id="updateForm">
+        <div class="form-group">
+            <input type="hidden" value={{user_data._id}} name="user_id">
+            <input type="hidden" value={{user_data.emailAddress}} name="email_address">
+            <label for="full_name">Full Name</label>
+            <input id="full_name" name="full_name" required class="form-control" placeholder="Full name" type="text"
+                value='{{user_data.fullName}}'>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email_address" disabled class="form-control" placeholder="Email address"
+                value='{{user_data.emailAddress}}' type="email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" required class="form-control" placeholder="Create password"
+                value='{{user_data.password}}' type="password">
+            <span id="p-hint">Requirements: Password length must be 6 to 15 characters long with at least one number and special character.</span>
+        </div>
+        <div class="form-group" hidden>
+            <label for="contact">Contact Number</label>
+            <input id="contact" name="contact" class="form-control" placeholder="Contact Number" type="number"
+                value='{{user_data.contactNo}}'>
+        </div>
+        <div class="form-group">
+            <label for="u-genres">Genres</label>
+            <p>Select up to 3 genres</p>
+            <select id="u-genres" name="genres_ids[]" class="form-control multiple-checkboxes" multiple>
+                {{!-- <option value="" selected> Select genres</option> --}}
+                {{#each genre_data}}
+                {{#ifcon this.selected 1 }}
+                <option value='{{this._id}}' selected>{{this.genreName}}</option>
+                {{else}}
+                <option value='{{this._id}}'>{{this.genreName}}</option>
+                {{/ifcon}}
+
+            {{/each}}
+        </select>
+        </div>
+        <div class="form-group ">
+            <label for="u-artists">Artists</label>
+            <p>Select up to 3 artists</p>
+            <select id="u-artists" name="artist_ids[]" class="form-control multiple-checkboxes" multiple>
+                {{!-- <option value="" selected> Select artist</option> --}}
+                {{#each artist_data}}
+
+                {{#ifcon this.selected 1 }}
+                <option value='{{this._id}}' selected>{{this.artistName}}</option>
+                {{else}}
+                <option value='{{this._id}}'>{{this.artistName}}</option>
+                {{/ifcon}}
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group ">
+            <button class="btn btn-primary" type="submit" id="submit" hidden>Update</button>
+        </div>
+    </form>
+    <div class="form-group" id="deleteUser">
+        <span> <a class="anchor" onclick="deleteuser()" >Do you want to delete your account?</a></span>
+    </div>
+</div>

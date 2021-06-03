@@ -1,0 +1,168 @@
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-12">
+            <h2>Add Thread</h2>
+            <div class="card p-2 mb-5">
+                <form method="POST" action="/thread/createNewThread">
+                    <input name="user_id" value="{{userID}}" type="hidden">
+                    <div class="form-group">
+                        <label for="title">Thread Title</label>
+                        <input type="text" name="title" class="form-control" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Thread Body</label>
+                        <textarea class="form-control" id="comment" rows="3" name="comment" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="genres">Optional Genre Tag</label>
+                        <select id="genres" name="genres_ids" class="form-control">
+                            <option value="" selected> Select genre</option>
+                            {{#each genre_data}}
+                            <option value={{this._id}}>{{this.genreName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="artists">Optional Artist Tag</label>
+                        <select id="artists" name="artist_ids" class="form-control">
+                            <option value="" selected> Select artist</option>
+                            {{#each artist_data}}
+                            <option value={{this._id}}>{{this.artistName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </form>
+            </div>
+            <h2>My Threads</h2>
+            {{#each threadData}}
+            <div class="card mt-3">
+                <div class="d-flex p-2">
+                    <div class="d-flex flex-grow-1">
+                        <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20" alt="img">
+                        {{this.fullName}}
+                    </div>
+                    <div>
+                        <i class="fas fa-pencil-alt mr-1"
+                            onclick="editThread('{{this.comment}}', '{{this.title}}', '{{this._id}}' )"></i>
+                        <a href="/thread/DeleteThread/{{this._id}}"> <i class="fas fa-trash mr-1"></i></a>
+                    </div>
+                </div>
+
+                <div class="card-body p-2">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {{this.comment}}</h6>
+                    {{!-- <div class="d-flex justify-content-center">
+                        <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
+                        <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
+                    </div> --}}
+
+                </div>
+
+                <div class="card-footer p-2">
+                    <button type="button" class="btn btn-sm btn-light"  onclick="commentToggle('{{this._id}}')">
+                        <i class="fas fa-comment-alt mr-1"></i>Comment({{this.commentCount}})
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light"
+                        onclick="addRemovelike('{{this._id}}', '{{../userID}}')">
+                        <!-- use below if not like -->
+                        {{#if this.userlike}}
+                        <i id={{this._id}} class="fas fa-thumbs-up"></i>
+                        {{else}}
+                        <i id={{this._id}} class="far fa-thumbs-up"></i>
+                        {{/if}}
+                        <!-- use below if liked -->
+
+                        like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
+                    </button>
+                    <p>Genre Tag: {{this.genres}} <br>
+                    Artist Tag: {{this.artist}} </p>
+                </div>
+                <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
+                    <div class="p-2">
+                        <form method="POST" action="/thread/AddSubThread/0">
+                            <input name="user_id" value="{{../userID}}" type="hidden">
+                            <input name="thread_id" value="{{this._id}}" type="hidden">
+                            <div class="form-group">
+                                <label for="comment">Your Comment</label>
+                                <textarea name="comment" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-light">Send</button>
+                        </form>
+                    </div>
+                    <div>
+                        {{#each this.subThread}}
+                        <div class="d-flex p-2">
+                            <div class="d-flex flex-grow-1">
+                                <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20"
+                                    alt="img">
+                                {{this.fullName}}
+                            </div>
+                            <div>
+                                <small>{{this.createdDate}}</small>
+                                <a href= "/thread/DeleteSubThread/{{this._id}}" ><i class="fas fa-trash mr-1"></i> </a>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                          {{this.comment}}
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="POST" action="/thread/UpdateThread">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Edit Thread</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input name="user_id" value="{{userID}}" type="hidden">
+                    <input name="thread_id" id="hiddenThreadId" type="hidden">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" id="editTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" id="editComment" rows="3" name="comment"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editGenres">Optional Genre Tag</label>
+                        <select id="editGenres" name="genres_ids" class="form-control">
+                            <option value="" selected> Select genre</option>
+                            {{#each genre_data}}
+                            <option value={{this._id}}>{{this.genreName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editArtists">Optional Artist Tag</label>
+                        <select id="editArtists" name="artist_ids" class="form-control">
+                            <option value="" selected> Select artist</option>
+                            {{#each artist_data}}
+                            <option value={{this._id}}>{{this.artistName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

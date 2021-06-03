@@ -1,0 +1,156 @@
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-3">
+            <div class="card">
+                <h5 class="card-title text-center">Top Genres</h5>
+                <ul class="list-group list-group-flush">
+                    {{#each top_genres}}
+                    <li class="list-group-item d-flex">
+                        {{inc @index}}. {{this}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="card mt-3">
+                <h5 class="card-title text-center">Top Artist by Genres</h5>
+                <ul class="list-group list-group-flush">
+                    {{#each top_artist_by_genres}}
+                    <li class="list-group-item d-flex">
+                    {{inc @index}}.
+                       <img src="/public/images/{{this.profileLogo}}"
+                            class="rounded-circle mr-2 ml-2 d-block w-20 artist-images" alt="img"> {{this.artistName }}<br />
+                        Genre: {{this.genreName }}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+        {{#if message}}
+        <div class="col-6">
+            <h3>{{message}}</h3>
+        </div>
+        {{else}}
+        <div class="col-6">
+            <h1 style="text-align:center">Music Forum</h1>
+            <form id="sort" method="POST" action="/" name="sort">
+                <label for="dropdown">Sort By:</label>
+                <select id="dropdown" name="dropdown">
+                    <option value="artist">Artist</option>
+                    <option value="comments">Number of Comments</option>
+                    <option value="date">Oldest</option>
+                    <option value="genre">Genre</option>
+                    <option value="likes">Number of Likes</option>
+                </select>
+                <button type="submit">Sort</button>
+            </form>
+            {{#each threadData}}
+            <div class="card mt-3">
+                <div class="d-flex p-2">
+                    <div class="d-flex flex-grow-1">
+                        <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20" alt="img">
+                        {{this.fullName}}
+
+                    </div>
+
+                </div>
+                <div class="card-body p-2">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {{this.comment}}</h6>
+                    {{!-- <div class="d-flex justify-content-center">
+                        <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
+                        <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
+                    </div> --}}
+
+                </div>
+
+                <div class="card-footer p-2">
+                    <button type="button" class="btn btn-sm btn-light" onclick="commentToggle('{{this._id}}')">
+                        <i class="fas fa-comment-alt mr-1"></i>Comment({{this.commentCount}})
+                    </button>
+
+                    {{#if ../auth}}
+                    <button type="button" class="btn btn-sm btn-light"
+                        onclick="addRemovelike('{{this._id}}', '{{../userID}}')">
+                        {{#if this.userlike}}
+                        <i id={{this._id}} class="fas fa-thumbs-up"></i>
+                        {{else}}
+                        <i id={{this._id}} class="far fa-thumbs-up"></i>
+                        {{/if}}
+
+                        like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
+                    </button>
+                    <p>Genre Tag: {{this.genres}} <br>
+                    Artist Tag: {{this.artist}} </p>
+
+                    {{else}}
+                    <button type="button" class="btn btn-sm btn-light">
+                        <i class="fas fa-thumbs-up"></i>
+                        like({{this.likeCount}})
+                    </button>
+                    <p>Genre Tag: {{this.genres}} <br>
+                    Artist Tag: {{this.artist}} </p>
+                    {{/if}}
+                </div>
+
+                <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
+                    {{#if ../auth}}
+                    <div class="p-2">
+                        <form method="POST" action="/thread/AddSubThread/1">
+                            <input name="user_id" value="{{../userID}}" type="hidden">
+                            <input name="thread_id" value="{{this._id}}" type="hidden">
+                            <div class="form-group">
+                                <label for="comment">Your Comment</label>
+                                <textarea name="comment" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-light">Send</button>
+                        </form>
+                    </div>
+                    {{/if}}
+                    <div>
+                        {{#each this.subThread}}
+                        <div class="d-flex p-2">
+                            <div class="d-flex flex-grow-1">
+                                <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20"
+                                    alt="img">
+                                {{this.fullName}}
+                            </div>
+                            <div>
+                                <small>{{this.createdDate}}</small>
+                                {{#if ../../auth}}
+                                <a href="/thread/DeleteSubThread/{{this._id}}"><i
+                                        class="fas fa-trash mr-1"></i> </a>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            {{this.comment}}
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+
+        <div class="col-3">
+            <div class="card top-genres">
+                <h5 class="card-title text-center">Top Artists</h5>
+                <ul class="list-group list-group-flush">
+                    {{#each top_artist}}
+                    <li class="list-group-item d-flex">
+                        {{inc @index}}.
+                        <img src="/public/images/{{this.profileLogo}}"
+                            class="rounded-circle mr-2 ml-2 d-block w-20 artist-images" alt="img">
+                        {{this.artistName}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+</div>
